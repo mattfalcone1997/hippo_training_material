@@ -11,7 +11,7 @@ def main():
     foam_reader: pv.POpenFOAMReader = pv.get_reader(foam_file)
     foam_reader.case_type = "decomposed"
 
-    edges = foam_reader.read()["boundary"].combine(True).extract_feature_edges()
+    edges = foam_reader.read()["boundary"].combine(merge_points=True).extract_feature_edges()
 
     thm_reader: pv.ExodusIIReader = pv.get_reader("main_out.e")
     p = pv.Plotter(off_screen=True, window_size=(1504,1504))

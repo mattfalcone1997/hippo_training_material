@@ -10,10 +10,10 @@ def main():
     foam_reader: pv.POpenFOAMReader = pv.get_reader(foam_file)
     foam_reader.case_type = "decomposed"
 
-    edges = foam_reader.read()["boundary"].combine(True).extract_feature_edges()
+    edges = foam_reader.read()["boundary"].combine(merge_points=True).extract_feature_edges()
 
     thm_reader = pv.get_reader("main_out.e")
-    p = pv.Plotter(off_screen=True, window_size=(1500,1500))
+    p = pv.Plotter(off_screen=True, window_size=(1504,1504))
     p.open_movie("mdot_transient.mp4", framerate=10, quality=10)
     assert foam_reader.number_time_points == thm_reader.number_time_points
 
