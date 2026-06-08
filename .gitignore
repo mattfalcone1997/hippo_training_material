@@ -1,0 +1,14 @@
+*_out.e
+*_out_*
+*.png
+*.mp4
+__pycache__
+processor*
+*[1-9]*
+!**/0
+*.swp
+**/polyMesh
+settings.json
+*.csv
+dynamicCode
+!*.vtu
