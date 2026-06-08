@@ -12,3 +12,4 @@ settings.json
 *.csv
 dynamicCode
 !*.vtu
+*.cc
