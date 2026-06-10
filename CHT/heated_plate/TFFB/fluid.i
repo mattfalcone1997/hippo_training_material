@@ -4,14 +4,6 @@
     foam_patch = 'interface'
 []
 
-[Variables]
-    [dummy]
-        family = MONOMIAL
-        order = CONSTANT
-        initial_condition = 999
-    []
-[]
-
 [FoamBCs]
     [solid_heat_flux]
         type = FoamDiffusionFluxBC
@@ -38,7 +30,7 @@
     end_time = 10
     dt = 0.025
 
-    solve_type = 'PJFNK'
+    solve_type = 'NEWTON'
     petsc_options_iname = '-pc_type -pc_hypre_type'
     petsc_options_value = 'hypre boomeramg'
 

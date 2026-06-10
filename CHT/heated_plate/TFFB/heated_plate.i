@@ -48,7 +48,7 @@
 
 [Transfers]
     [wall_temperature_from_fluid]
-        type = MultiAppGeometricInterpolationTransfer
+        type = MultiAppGeneralFieldNearestLocationTransfer
         source_variable = fluid_wall_temp
         from_multi_app = hippo
         variable = fluid_wall_temperature
@@ -56,7 +56,7 @@
     []
 
     [heat_flux_to_fluid]
-        type = MultiAppGeometricInterpolationTransfer
+        type = MultiAppGeneralFieldNearestLocationTransfer
         source_variable = wall_heat_flux
         to_multi_app = hippo
         variable = solid_heat_flux
@@ -72,6 +72,17 @@
     []
 []
 
+[Kernels]
+    [heat-conduction]
+        type = HeatConduction
+        variable = T
+    []
+    [heat-conduction-dt]
+        type = HeatConductionTimeDerivative
+        variable = T
+    []
+[]
+
 [AuxVariables]
     [fluid_wall_temperature]
         family = LAGRANGE
@@ -82,17 +93,6 @@
         family = MONOMIAL
         order = CONSTANT
         initial_condition = 0
-    []
-[]
-
-[Kernels]
-    [heat-conduction]
-        type = HeatConduction
-        variable = T
-    []
-    [heat-conduction-dt]
-        type = HeatConductionTimeDerivative
-        variable = T
     []
 []
 
@@ -124,13 +124,6 @@
 []
 
 [Materials]
-    # The example specifies that the thermal diffusivity of the solid should
-    # be α = 1 m2/s, and the thermal conductivity should be k = 100 W/(m.K).
-    #
-    # We know α = k/(Cp.ρ), where k is thermal conductivity, Cp is specific
-    # heat capacity, and ρ is density.
-    #
-    # Hence we require that Cp.ρ = k = 100.
     [thermal-conduction]
         type = HeatConductionMaterial
         thermal_conductivity = 100.0  # W/(m.K)
@@ -149,15 +142,14 @@
     end_time = 10
     dt = 0.025
 
-    fixed_point_abs_tol = 1e-7
-    fixed_point_rel_tol = 1e-8
-
-    solve_type = 'PJFNK'
-    petsc_options = '-snes_ksp_ew'
+    solve_type = 'NEWTON'
     petsc_options_iname = '-pc_type -pc_hypre_type'
     petsc_options_value = 'hypre boomeramg'
     nl_abs_tol = 1e-7
     nl_rel_tol = 1e-8
+
+    l_tol = 1e-7
+    l_abs_tol = 1e-8
 []
 
 [Outputs]

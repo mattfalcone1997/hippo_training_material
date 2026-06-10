@@ -62,7 +62,6 @@
     dt = 2.
 
     solve_type = NEWTON
-    petsc_options = '-snes_ksp_ew'
     petsc_options_iname = '-pc_type -pc_hypre_type'
     petsc_options_value = 'hypre boomeramg'
     nl_rel_tol = 1e-7

@@ -20,21 +20,6 @@
     []
 []
 
-#[AuxVariables]
-#  [bulk_t]
-#    family = MONOMIAL
-#    order  = CONSTANT
-#  []
-#[]
-#
-#[AuxKernels]
-#  [bulk_t]
-#    type = SpatialUserObjectAux
-#    user_object = bulk_t
-#    variable = bulk_t
-#  [] 
-#[]
-
 [UserObjects]
     [bulk_t]
         type = AdjacentCellBulkTemperature

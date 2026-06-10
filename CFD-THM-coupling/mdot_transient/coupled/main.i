@@ -3,11 +3,6 @@ D = 0.05
 A = ${fparse pi*0.25*D*D}
 press = 101325
 
-[Problem]
-  library_path = /home/mfalcone/software_development/hippo/hippo/lib
-  library_name = libhippo-opt.la
-[]
-
 [MultiApps]
     [hippo]
         type = TransientMultiApp
@@ -111,7 +106,7 @@ press = 101325
     boundary = pipe1:out
     variable = T
     execute_on = "INITIAL TIMESTEP_BEGIN"
-    []
+  []
   [mdot_interface_out]
     type = ADFlowBoundaryFlux1Phase
     boundary = interface_out

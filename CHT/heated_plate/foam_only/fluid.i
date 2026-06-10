@@ -4,15 +4,6 @@
     foam_patch = 'interface'
 []
 
-[Variables]
-    [dummy]
-        family = MONOMIAL
-        order = CONSTANT
-        initial_condition = 999
-    []
-[]
-
-
 [Problem]
     type = FoamProblem
 []

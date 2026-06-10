@@ -22,4 +22,6 @@ sed -i "s/numberOfSubdomains.*/numberOfSubdomains $NPROCS;/g" foam_cfd/system/de
 
 decomposePar -case foam_cfd
 
+touch foam_cfd/viz.foam
+
 echo "Partitioned with $NPROCS processors"

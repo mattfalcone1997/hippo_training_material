@@ -4,14 +4,6 @@
     foam_patch = 'interface'
 []
 
-[Variables]
-    [dummy]
-        family = MONOMIAL
-        order = CONSTANT
-        initial_condition = 999
-    []
-[]
-
 [FoamBCs]
     [solid_wall_temp]
         type = FoamFixedValueBC
@@ -39,10 +31,6 @@
     dt = 0.025
     # end_time = 50
     # dt = 0.1
-
-    solve_type = 'PJFNK'
-    petsc_options_iname = '-pc_type -pc_hypre_type'
-    petsc_options_value = 'hypre boomeramg'
 
     [TimeSteppers]
         [foam]

@@ -3,24 +3,6 @@ D = 0.05
 A = ${fparse pi*0.25*D*D}
 press = 101325
 
-[ControlLogic]
-  [mdot_inlet]
-    type = SetComponentRealValueControl
-    component = inlet
-    parameter = m_dot
-    value = mdot_inlt
-  []
-[]
-
-[Postprocessors]
-  [mdot_inlt]
-    type = ParsedPostprocessor
-    expression = 'if(t<0.6, 3.92, if(t<0.8, 3.92+19.6*(t-0.6), 7.84))'
-    use_t = true
-    execute_on = "INITIAL TIMESTEP_BEGIN"
-  []
-[]
-
 [GlobalParams]
   initial_p = ${press}
   initial_vel = 2
@@ -37,9 +19,21 @@ press = 101325
   []
 []
 
-[Closures] # defines friction factors and heat transfer coefficients
-  [thm_closures]
-    type = Closures1PhaseTHM # default Churchill friction factor, DB HTC
+[ControlLogic]
+  [mdot_inlet]
+    type = SetComponentRealValueControl
+    component = inlet
+    parameter = m_dot
+    value = mdot_inlt
+  []
+[]
+
+[Postprocessors]
+  [mdot_inlt]
+    type = ParsedPostprocessor
+    expression = 'if(t<0.6, 3.92, if(t<0.8, 3.92+19.6*(t-0.6), 7.84))'
+    use_t = true
+    execute_on = "INITIAL TIMESTEP_BEGIN"
   []
 []
 
@@ -64,6 +58,12 @@ press = 101325
         input = pipe1:out
         p = ${press}
     []
+[]
+
+[Closures] # defines friction factors and heat transfer coefficients
+  [thm_closures]
+    type = Closures1PhaseTHM # default Churchill friction factor, DB HTC
+  []
 []
 
 [Preconditioning]

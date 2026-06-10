@@ -48,7 +48,7 @@
 
 [Transfers]
     [heat_flux_from_fluid]
-        type = MultiAppGeometricInterpolationTransfer
+        type = MultiAppGeneralFieldNearestLocationTransfer
         source_variable = fluid_heat_flux
         from_multi_app = hippo
         variable = fluid_heat_flux
@@ -56,7 +56,7 @@
     []
 
     [temp_to_fluid]
-        type = MultiAppGeometricInterpolationTransfer
+        type = MultiAppGeneralFieldNearestLocationTransfer
         source_variable = solid_wall_temperature
         to_multi_app = hippo
         variable = solid_wall_temp
@@ -153,15 +153,11 @@
     # end_time = 50
     # dt = 0.1
 
-    solve_type = 'PJFNK'
-    petsc_options = '-snes_ksp_ew'
+    solve_type = 'NEWTON'
     petsc_options_iname = '-pc_type -pc_hypre_type'
     petsc_options_value = 'hypre boomeramg'
     nl_abs_tol = 1e-7
     nl_rel_tol = 1e-8
-
-    # steady_state_detection = true
-    # steady_state_tolerance = 1e-7
 []
 
 [Outputs]

@@ -7,8 +7,6 @@
 
 [Problem]
     type = FoamProblem
-    library_path = /home/mfalcone/software_development/hippo/hippo/lib
-    library_name = libhippo-opt.la
 []
 
 [Executioner]
