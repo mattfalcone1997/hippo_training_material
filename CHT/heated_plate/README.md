@@ -5,5 +5,9 @@ This example is derived from the [flow over heated plate preCICE tutorial](https
 1. TFFB: case replicating the preCICE tutorial
 1. FFTB: case showing how under these conditions, FFTB is unstable
 1. FFTB with modified properties: A working example with FFTB
+    - Review solid physical properties in `heated_plate.i`
+    - Review fluid properties in `fluid-openfoam/constant/thermophysicalProperties`
+    - Review inlet velocity in `fluid-openfoam/0/U`
+    - Review `dt` and `end_time` in `heated_plate.i` and `fluid.i`
 
 `post.py` and for the FFTB case, `post_error.py` will create videos and frames of the results.
