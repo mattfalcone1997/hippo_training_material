@@ -41,7 +41,7 @@
     [hippo]
         type = TransientMultiApp
         app_type = hippoApp
-        execute_on = timestep_begin
+        execute_on = timestep_end
         input_files = 'fluid.i'
     []
 []
@@ -72,6 +72,17 @@
     []
 []
 
+[Kernels]
+    [heat-conduction]
+        type = HeatConduction
+        variable = T
+    []
+    [heat-conduction-dt]
+        type = HeatConductionTimeDerivative
+        variable = T
+    []
+[]
+
 [AuxVariables]
     [solid_wall_temperature]
         family = LAGRANGE
@@ -82,17 +93,6 @@
         family = MONOMIAL
         order = CONSTANT
         initial_condition = 0
-    []
-[]
-
-[Kernels]
-    [heat-conduction]
-        type = HeatConduction
-        variable = T
-    []
-    [heat-conduction-dt]
-        type = HeatConductionTimeDerivative
-        variable = T
     []
 []
 
@@ -132,23 +132,24 @@
     # Hence we require that Cp.ρ = k = 100.
     [thermal-conduction]
         type = HeatConductionMaterial
-        # thermal_conductivity = 100.0 # W/(m.K)
-        # specific_heat = 0.5  # J/(kg.K)
-        thermal_conductivity = 15.  # W/(m.K)
-        specific_heat = 500 # J/(kg.K)
+        thermal_conductivity = 100.0 # W/(m.K)
+        specific_heat = 0.5  # J/(kg.K)
+        # thermal_conductivity = 15.  # W/(m.K)
+        # specific_heat = 500 # J/(kg.K)
     []
     [thermal-density]
         type = GenericConstantMaterial
         prop_names  = 'density'
-        # prop_values = 200.0  #7800 # kg/m3
-        prop_values = 7800 # kg/m3
+        prop_values = 200.0 # kg/m3
+        # prop_values = 7800 # kg/m3
     []
   []
 
 [Executioner]
     type = Transient
     start_time = 0
-    end_time = 300
+    end_time = 10
+    # end_time = 50
     dt = 0.1
 
     fixed_point_abs_tol = 1e-7

@@ -14,8 +14,8 @@ def main():
     times = solid_reader.time_values[:-1]
 
     Path("images").mkdir(exist_ok=True)
+
     p = pv.Plotter(off_screen=True, window_size=(2000, 704))
-    p.open_movie("heated_plate.mp4", framerate=40)
     for i, t in enumerate(times):
         solid_reader.set_active_time_point(i)
         fluid_reader.set_active_time_point(i)
@@ -31,8 +31,21 @@ def main():
         p.add_mesh(fluid, cmap='bwr', clim=(300,310), scalars='T')
         p.enable_parallel_projection()
         p.view_xy()
+
+        fps = list(solid.center)
+        fps[1] = 0
+
+        cps = fps.copy()
+        cps[2] = 2
+
+        p.camera.focal_point = fps
+        p.camera.position = cps
+
+        p.camera.zoom(5)
+        p.add_text(f"t = {t:.5g}")
+
         p.render()
-        p.write_frame()
+        p.screenshot(f"images/frames_{i}.png")
 
     p.close()
 

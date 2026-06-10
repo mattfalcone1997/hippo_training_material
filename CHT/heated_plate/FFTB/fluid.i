@@ -35,8 +35,8 @@
 [Executioner]
     type = Transient
     start_time = 0
-    # end_time = 10
-    end_time = 300
+    end_time = 10
+    # end_time = 50
     dt = 1.
 
     solve_type = 'PJFNK'
