@@ -5,6 +5,6 @@ FoamFile {
     format ascii;
 }
 
-numberOfSubdomains 5;
+numberOfSubdomains 4;
 
 method          scotch;

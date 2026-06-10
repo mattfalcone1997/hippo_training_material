@@ -25,8 +25,8 @@ apptainer shell hippo.sif
 
 We also suggest running the following commands when the shell starts.
 ```bash
-export PATH=$PATH:/opt/hippo
-export PATH=$PATH:/opt/moose/modules/thermal_hydraulics
+export PATH=/opt/hippo:$PATH
+export PATH=/opt/moose/modules/thermal_hydraulics:$PATH
 export MOOSE_LIBRARY_PATH=/opt/hippo/lib
 unset FOAM_SIGFPE
 ```

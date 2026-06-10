@@ -19,66 +19,27 @@
 []
 
 [FoamBCs]
-    [m_dot]
+    # Mapped inlet weighted by postprocessor of name mdot
+    [mdot_inlet]
         type = FoamMassFlowRateMappedInletBC
         boundary = inlet
-        pp_name = mdot_inlet
         translation_vector = '0 0 0.5'
     []
+    # Impose uniform temperature on the inlet
     [T_inlet]
-        type = FoamFixedValueBC
+        type = FoamFixedValuePostprocessorBC
         boundary = inlet
         foam_variable = 'T'
     []
+    # Impose uniform pressure of the outlet
     [p_outlet]
-        type = FoamFixedValueBC
+        type = FoamFixedValuePostprocessorBC
         boundary = outlet
         foam_variable = 'p'
     []
 []
 
-[AuxKernels]
-    [T_inlet]
-        type= FunctionAux
-        variable = T_inlet
-        function = T_inlet
-        execute_on = TIMESTEP_BEGIN
-    []
-    [p_outlet]
-        type= FunctionAux
-        variable = p_outlet
-        function = p_outlet
-        execute_on = TIMESTEP_BEGIN
-    []
-[]
-[Functions]
-    [T_inlet]
-        type = ParsedFunction
-        expression = 'pp'
-        symbol_names = 'pp'
-        symbol_values = T_inlt_pp
-    []
-    [p_outlet]
-        type = ParsedFunction
-        expression = 'pp'
-        symbol_names = 'pp'
-        symbol_values = p_outlet
-    []
-[]
-
 [Postprocessors]
-    [mdot_inlet]
-        type = Receiver
-        default = 3.92
-    []
-    [T_inlt_pp]
-        type = Receiver
-        default = 300
-    []
-    [p_outlet]
-        type = Receiver
-        default = 101325
-    []
     [mdot_outlet]
         type = FoamSideAdvectiveFluxIntegral
         foam_scalar = rho

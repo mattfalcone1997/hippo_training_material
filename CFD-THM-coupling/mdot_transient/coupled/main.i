@@ -13,6 +13,7 @@ press = 101325
     []
 []
 
+# Transfer postprocessors to-and-from CFD simulation
 [Transfers]
     [mdot_from_cfd]
         type = MultiAppPostprocessorTransfer
@@ -55,6 +56,8 @@ press = 101325
     []
 []
 
+# Impose postprocessors transferred from OpenFOAM onto the component parameters
+# for the inlet and the outlet
 [ControlLogic]
   [T_interface_in]
     type = SetComponentRealValueControl
@@ -74,6 +77,7 @@ press = 101325
     parameter = p
     value = p_interface_out
   []
+  # Impose parsed postprocessor to induce mass flow rate transient
   [mdot_inlet]
     type = SetComponentRealValueControl
     component = inlet
@@ -82,6 +86,7 @@ press = 101325
   []
 []
 
+# Receivers used as 'targets' for postprocessor transfers
 [Postprocessors]
   [mdot_interface_in]
     type = Receiver
@@ -91,15 +96,15 @@ press = 101325
     type = Receiver
     default = 300
   []
+  [p_interface_out]
+    type = Receiver
+    default = ${press}
+  []
+  # Calculate averaged to be sent to OpenFOAM
   [p_interface_in]
     type = SideAverageValue
     boundary = pipe1:out
     variable = T
-    execute_on = "INITIAL TIMESTEP_BEGIN"
-  []
-  [p_interface_out]
-    type = Receiver
-    default = ${press}
   []
   [T_interface_out]
     type = SideAverageValue
@@ -107,12 +112,14 @@ press = 101325
     variable = T
     execute_on = "INITIAL TIMESTEP_BEGIN"
   []
+  # Calculate mass flow rate for the OpenFOAM inlet BC
   [mdot_interface_out]
     type = ADFlowBoundaryFlux1Phase
     boundary = interface_out
     equation = mass
     execute_on = "INITIAL TIMESTEP_BEGIN"
   []
+  # Doubles inlet mass flow rate from 0.6s to 0.8s
   [mdot_inlt]
     type = ParsedPostprocessor
     expression = 'if(t<0.6, 3.92, if(t<0.8, 3.92+19.6*(t-0.6), 7.84))'
@@ -130,6 +137,7 @@ press = 101325
   gravity_vector = '0 -9.81 0'
 []
 
+# Variable properties must be used, not we have treated the CFD and constant density
 [FluidProperties]
   [water]
     type = SimpleFluidProperties
@@ -159,6 +167,7 @@ press = 101325
         A = ${A}
         D_h = ${D}
     []
+    # interface_* where pp calculated from OpenFOAM are 'imposed'
     [interface_out]
         type =Outlet1Phase
         input = pipe1:out

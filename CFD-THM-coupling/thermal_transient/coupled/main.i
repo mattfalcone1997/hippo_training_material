@@ -13,6 +13,7 @@ press = 101325
     []
 []
 
+# Transfer postprocessors to-and-from CFD simulation
 [Transfers]
     [mdot_from_cfd]
         type = MultiAppPostprocessorTransfer
@@ -44,7 +45,7 @@ press = 101325
         type = MultiAppPostprocessorTransfer
         to_multi_app = hippo
         from_postprocessor = T_interface_out
-        to_postprocessor = T_inlt_pp
+        to_postprocessor = T_inlet
     []
     [p_from_cfd]
         type= MultiAppPostprocessorTransfer
@@ -55,6 +56,8 @@ press = 101325
     []
 []
 
+# Impose postprocessors transferred from OpenFOAM onto the component parameters
+# for the inlet and the outlet
 [ControlLogic]
   [T_interface_in]
     type = SetComponentRealValueControl
@@ -74,6 +77,7 @@ press = 101325
     parameter = p
     value = p_interface_out
   []
+  # Impose parsed postprocessor to induce thermal transient
   [T_inlet]
     type = SetComponentRealValueControl
     component = inlet
@@ -82,6 +86,7 @@ press = 101325
   []
 []
 
+# Receivers used as 'targets' for postprocessor transfers
 [Postprocessors]
   [mdot_interface_in]
     type = Receiver
@@ -91,25 +96,28 @@ press = 101325
     type = Receiver
     default = 300
   []
+  [p_interface_out]
+    type = Receiver
+    default = ${press}
+  []
+  # Calculate averaged to be sent to OpenFOAM
   [p_interface_in]
     type = SideAverageValue
     boundary = pipe1:out
     variable = T
   []
-  [p_interface_out]
-    type = Receiver
-    default = ${press}
-  []
   [T_interface_out]
     type = SideAverageValue
     boundary = pipe1:out
     variable = T
-    []
+  []
+  # Calculate mass flow rate for the OpenFOAM inlet BC
   [mdot_interface_out]
     type = ADFlowBoundaryFlux1Phase
     boundary = interface_out
     equation = mass
   []
+  # Temperature increases from 300K to 350K from 0.1s to 0.2s
   [T_inlet]
     type = ParsedPostprocessor
     expression = 'if(t<0.1, 300, if(t<0.2, 300+500*t, 350))'
@@ -127,6 +135,7 @@ press = 101325
   gravity_vector = '0 -9.81 0'
 []
 
+# Variable properties must be used, not we have treated the CFD and constant density
 [FluidProperties]
   [water]
     type = SimpleFluidProperties
@@ -156,6 +165,7 @@ press = 101325
         A = ${A}
         D_h = ${D}
     []
+    # interface_* where pp calculated from OpenFOAM are 'imposed'
     [interface_out]
         type =Outlet1Phase
         input = pipe1:out

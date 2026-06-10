@@ -10,7 +10,7 @@ elif [[ -n $HIPPO_NPROCS ]]; then
     echo "Number of processes set through environment variable
 else
     NPROCS=4
-    echo "Number of processes default
+    echo "Number of processes default"
 fi
 
 set -v
