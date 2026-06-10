@@ -17,3 +17,4 @@ dynamicCode
 *.sif
 *.foam
 .venv
+.vscode
