@@ -149,11 +149,9 @@
     type = Transient
     start_time = 0
     end_time = 10
+    dt 0.025
     # end_time = 50
-    dt = 0.1
-
-    fixed_point_abs_tol = 1e-7
-    fixed_point_rel_tol = 1e-8
+    # dt = 0.1
 
     solve_type = 'PJFNK'
     petsc_options = '-snes_ksp_ew'
