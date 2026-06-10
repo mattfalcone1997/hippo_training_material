@@ -44,4 +44,5 @@ and to run the `thermal_hydraulics` app
 mpirun -n $HIPPO_NPROCS thermal_hydraulics-opt -i main.i
 ```
 
+The examples also have Python scripts which use Pyvista to visualise the results.
 
