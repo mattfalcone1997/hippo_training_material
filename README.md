@@ -9,7 +9,10 @@
 wget https://github.com/apptainer/apptainer/releases/download/v1.4.5/apptainer_1.4.5_amd64.deb
 sudo apt install -y ./apptainer_1.4.5_amd64.deb
 ```
-  - If you are using the RPM package manager, go to [Apptainer release](https://github.com/apptainer/apptainer/releases/tag/v1.4.5) and find the correct package
+  - If you are using the RPM package manager, go to [Apptainer release](https://github.com/apptainer/apptainer/releases/tag/v1.4.5) and find the correct package.
+  - On MacOS, you will need a virtual machine. [Apptainer recommends using Lima](https://apptainer.org/docs/admin/main/installation.html).
+  - On Windows, you can use Window Subsystem for Linus (WSL2) and follow the same commands as above.
+
 
 2. Pull Hippo release container
 ```bash
