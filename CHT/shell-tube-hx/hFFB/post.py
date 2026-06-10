@@ -6,7 +6,7 @@ import numpy as np
 import pyvista as pv
 
 
-def visualise_shell_tube(inner, outer, solid, src=None):
+def visualise_shell_tube(inner, outer, solid, src=None, plotter=None):
 
     if src is None:
         streamlines, src = outer.streamlines(vectors='U',
@@ -21,27 +21,30 @@ def visualise_shell_tube(inner, outer, solid, src=None):
                                                     vectors='U',
                                                     integration_direction='forward',
                                                     max_steps=5000)
-    p = pv.Plotter()
+
+    if plotter is None:
+        plotter = pv.Plotter()
+
     kwargs = {'clim': (280, 353),
               'cmap': 'jet',
               'show_scalar_bar': False}
-    p.add_mesh(solid, scalars='T',
+    plotter.add_mesh(solid, scalars='T',
                **kwargs)
-    p.add_mesh(inner, scalars='T',
+    plotter.add_mesh(inner, scalars='T',
                **kwargs)
-    p.add_mesh(streamlines,
+    plotter.add_mesh(streamlines,
                scalars='T',
                render_lines_as_tubes=True,
                line_width=7.,
                **kwargs)
 
-    p.view_xy()
-    p.camera.up = (0, -1, 0)
-    p.camera.azimuth = 30
-    p.camera.elevation = 20
-    p.camera.zoom(2.)
+    plotter.view_xy()
+    plotter.camera.up = (0, -1, 0)
+    plotter.camera.azimuth = 30
+    plotter.camera.elevation = 20
+    plotter.camera.zoom(1.5)
 
-    return p, src
+    return plotter, src
 
 
 def main():
@@ -74,23 +77,29 @@ def main():
     inner = inner_reader.read()["internalMesh"]
     solid = solid_reader.read()["Element Blocks"]
 
+    p = pv.Plotter(window_size=(1200,600), shape=(1,2))
+    p.subplot(0,0)
     # Create the streamlines
-    p, src = visualise_shell_tube(inner, outer, solid)
-    p.show()
+    p, src = visualise_shell_tube(inner, outer, solid, plotter=p)
+    p.add_text("Hippo")
 
     reference_results = pv.get_reader("reference_results.vtm").read()
     inner_ref = reference_results['inner']
     outer_ref = reference_results['outer']
     solid_ref = reference_results['solid']
 
+    p.subplot(0,1)
+
     p, src = visualise_shell_tube(
-        inner_ref, outer_ref, solid_ref, src=src)
+        inner_ref, outer_ref, solid_ref, src=src, plotter=p)
+    p.add_text("preCICE")
+
+    p.link_views()
     p.show()
 
+    p = pv.Plotter()
     inner.point_data['Error'] = abs(inner.point_data['T'] - inner_ref.point_data['T'])/(353-280.)
     outer.point_data['Error'] = abs(outer.point_data['T'] - outer_ref.point_data['T'])/(353 - 280.)
-
-    p = pv.Plotter()
 
     kwargs = {'scalars' : 'Error',
               'cmap' : 'hot_r',

@@ -16,3 +16,4 @@ dynamicCode
 .jitcache
 *.sif
 *.foam
+.venv

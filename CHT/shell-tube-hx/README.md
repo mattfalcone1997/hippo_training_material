@@ -4,3 +4,9 @@ This example is also based on the [heat exchanger tutorial](https://precice.org/
 The example is more complex than previously with two fluid domains coupled to the solid
 using the hFTB coupling strategy.
 Afterwards, we compare our results to the preCICE example visually and pointwise.
+
+## Visualising results
+
+In order to do pointwise comparisons of the preCICE and Hippo, we must also use
+the `reconstructPar` command.
+For convenience, these can be run using `./post_prep.sh`.

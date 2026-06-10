@@ -44,5 +44,18 @@ and to run the `thermal_hydraulics` app
 mpirun -n $HIPPO_NPROCS thermal_hydraulics-opt -i main.i
 ```
 
+## Visualisation
+
 The examples also have Python scripts which use Pyvista to visualise the results.
+While `pyvista` should be installed in the container, we recommend using a virtual environment.
+```bash
+python -m venv .venv
+```
+To install the required modules, activate the environment and use `pip`
+```bash
+source .venv/bin/activate
+python -m pip install -r requirements.txt
+```
+
+
 
