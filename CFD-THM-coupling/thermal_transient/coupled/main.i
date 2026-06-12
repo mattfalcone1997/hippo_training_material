@@ -32,7 +32,7 @@ press = 101325
     [p_to_cfd]
         type= MultiAppPostprocessorTransfer
         to_multi_app = hippo
-        from_postprocessor = p_interface_out
+        from_postprocessor = p_interface_in
         to_postprocessor = p_outlet
     []
     [mdot_to_cfd]
@@ -103,8 +103,8 @@ press = 101325
   # Calculate averaged to be sent to OpenFOAM
   [p_interface_in]
     type = SideAverageValue
-    boundary = pipe1:out
-    variable = T
+    boundary = pipe2:in
+    variable = p
   []
   [T_interface_out]
     type = SideAverageValue

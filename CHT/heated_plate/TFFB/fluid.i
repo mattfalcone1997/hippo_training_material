@@ -30,10 +30,6 @@
     end_time = 10
     dt = 0.025
 
-    solve_type = 'NEWTON'
-    petsc_options_iname = '-pc_type -pc_hypre_type'
-    petsc_options_value = 'hypre boomeramg'
-
     [TimeSteppers]
         [foam]
             type = FoamTimeStepper

@@ -1,17 +1,13 @@
 #!/bin/bash
 set -e
 
-# Set number of processes to be run ion
-if [[ $# -eq 2 ]]; then
-    NPROCS=$1
-    echo "Number of processes set through command line
-elif [[ -n $HIPPO_NPROCS ]]; then
-    NPROCS=${HIPPO_NPROCS}
-    echo "Number of processes set through environment variable
-else
-    NPROCS=4
-    echo "Number of processes default"
+if [ ! -f ../../../hippo_prereqs.sh ]; then
+    echo "This script requires ../../../hippo_prereqs.sh"
+    exit 1
 fi
+
+source ../../../hippo_prereqs.sh
+NPROCS=$(set_nprocs $@)
 
 set -v
 
@@ -21,6 +17,10 @@ foamCleanCase -case fluid-outer-openfoam
 rm -rf solid_out*
 
 ./download_meshes.sh
+
+sed -i "s/numberOfSubdomains.*/numberOfSubdomains $NPROCS;/g" fluid-inner-openfoam/system/decomposeParDict
+sed -i "s/numberOfSubdomains.*/numberOfSubdomains $NPROCS;/g" fluid-outer-openfoam/system/decomposeParDict
+
 
 decomposePar -case fluid-inner-openfoam
 decomposePar -case fluid-outer-openfoam
